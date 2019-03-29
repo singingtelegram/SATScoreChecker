@@ -4,6 +4,7 @@ import time
 import json
 import pathlib
 import getpass
+import logging
 
 def loadUser():
     p = pathlib.Path("user.json")
@@ -13,7 +14,7 @@ def loadUser():
                 user_info = json.load(f)
                 return user_info
         except OSError:
-            print("Error trying to open the user info file (user.json)!")
+            logger.error("Error trying to open the user info file (user.json)!")
             return 255
     else:
         return -1
@@ -48,21 +49,21 @@ def checkScores():
 
     if r.status_code == 200:
         #if
-        if "Sorry, we don\'t recognize" in r.text:
+        if "don\'t recognize" in r.text:
             deleteConfig()
-            print("[", int(time.time()), "] ", "Your login credentials are invalid. Try again?", sep="")
+            logger.error("Your login credentials are invalid. Try again?")
             exit(255)
         #'''elif "We don't recognize that username and password." in r.text:
         #    deleteConfig()
         #    print("[", int(time.time()), "] ", "Your login credentials are invalid. (Wrong password?) Try again?", sep="")
         #    exit(255)'''
         else:
-            print("[", int(time.time()), "] ", "Login successful", sep="")
+            logger.info("Login successful!")
         #print(r.text)
     else:
-        print("[", int(time.time()), "] ", "Login failed! Exiting...", sep="")
+        logger.error("Login failed! Exiting...")
         # a non-200 response code means errors other than incorrect username/pwd
-        print(r.text)
+        logger.debug(r.text)
         #ifttt post here
         exit(255)
     soup = BeautifulSoup(r.text, features="html.parser")
@@ -81,7 +82,7 @@ def checkScores():
         tmp = tmp.replace("\n\n", "")
         tmp = tmp.replace(" SAT", "SAT")
         tmp = tmp.replace("Total Score", "")
-        print(i+1, ": ", tmp, "\n", sep="")
+        logger.info(str(i+1) + ": " + tmp + "\n")
 
     #ifttt here
 '''    for i in range(len(scores)):
@@ -114,16 +115,16 @@ def checkScoresDiff(usr, pwd):
         #if
         if "don\'t recognize" in r.text:
             deleteConfig()
-            print("[", int(time.time()), "] ", "Your login credentials are invalid. Try again?", sep="")
+            logger.error("Your login credentials are invalid. Try again?")
             exit(255)
         else:
-            print("[", int(time.time()), "] ", "Login successful", sep="")
+            logger.info("Login successful!")
         #print("[", int(time.time()), "] ", "Login successful", sep="")
         #print(r.text)
     else:
-        print("[", int(time.time()), "] ", "Request failed with a status code of ", r.status_code, ". Exiting...", sep="")
+        logger.error("Request failed with a status code of " + str(r.status_code) + ". Exiting...")
         # a non-200 response code means errors other than incorrect username/pwd
-        print(r.text)
+        logger.debug(r.text)
         #ifttt post here
         exit(255)
     soup = BeautifulSoup(r.text, features="html.parser")
@@ -140,14 +141,29 @@ def checkScoresDiff(usr, pwd):
     res = tmp
     return res
 
+logger = logging.getLogger('sat_logger')
+logger.setLevel(logging.DEBUG)
+fh = logging.FileHandler('SATScoreChecker.log')
+fh.setLevel(logging.DEBUG)
+# create console handler with a higher log level
+ch = logging.StreamHandler()
+ch.setLevel(logging.INFO)
+# create formatter and add it to the handlers
+formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')
+ch.setFormatter(formatter)
+fh.setFormatter(formatter)
+# add the handlers to logger
+logger.addHandler(ch)
+logger.addHandler(fh)
+
 #checkScores()
 #todo: mask pwd
 if pathlib.Path("user.json").is_file():
-    print("Loading CollegeBoard account info from file \"user.json\"...")
+    logger.info("Loading CollegeBoard account info from file \"user.json\"...")
     user_info = loadUser()
     u = user_info.get("username")
     p = user_info.get("password")
-    print("[", int(time.time()), "] ", "Logging in as: ", u, sep="")
+    logger.info("Logging in as: " + u)
 else:
     u = input("Your username: ")
     p = getpass.getpass("Your password (input won't be echoed): ")
@@ -160,15 +176,18 @@ else:
     f.close()
 
 
+
+
+
 prevResults = checkScoresDiff(u, p)
-print(prevResults)
+logger.info(prevResults)
 time.sleep(20)
 while True:
     curResults = checkScoresDiff(u, p)
     #print(curResults)
     if curResults != prevResults:
-        print("New scores posted!")
-        print(curResults)
+        logger.warning("New scores posted!")
+        logger.info(curResults)
         if os.name == "nt":
             os.system("pause")
         else:
