@@ -24,8 +24,6 @@ def deleteConfig():
     if p.is_file():
         p.unlink()
 
-
-
 def checkScores():
     url = "https://account.collegeboard.org/login/authenticateUser"
     headers = {
@@ -71,7 +69,6 @@ def checkScores():
         tmp = tmp.replace(" SAT", "SAT")
         tmp = tmp.replace("Total Score", "")
         logger.info(str(i+1) + ": " + tmp + "\n")
-
 
 def checkScoresDiff(usr, pwd):
     url = "https://account.collegeboard.org/login/authenticateUser"
@@ -119,6 +116,7 @@ def checkScoresDiff(usr, pwd):
     tmp = tmp.replace("Total Score", "")
     res = tmp
     return res
+    
 def main():
     if pathlib.Path("user.json").is_file():
         logger.info("Loading CollegeBoard account info from file \"user.json\"...")
