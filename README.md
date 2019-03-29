@@ -9,6 +9,3 @@ checks collegeboard.org for new SAT scores
 ### Usage
 1. Launch the program: `python3 sat.py` or run `sat.exe`
 2. Enter your CollegeBoard login
-
-### Notes
- * `os.system("pause")` on Windows binaries
