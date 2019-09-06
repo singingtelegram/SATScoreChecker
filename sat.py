@@ -84,7 +84,7 @@ def checkScores(usr, pwd):
     is_sat = []
     for i in range(0,len(header_content)):
         header_content_text = header_content[i].find_all("h3")[0].get_text()
-        if header_content_text.find("SAT with Essay —") != -1 or a.find("SAT —") != -1:
+        if header_content_text.find("SAT with Essay —") != -1 or header_content_text.find("SAT —") != -1:
             is_sat.append(True)
         else:
             is_sat.append(False)
@@ -174,7 +174,6 @@ def checkScoresDiff(usr, pwd):
         score_report += soup.find_all("div", {"class":"score"})[1].get_text()
         score_report += ", Math: "
         score_report += soup.find_all("div", {"class":"score"})[2].get_text()
-        offset = new_offset
 
     return score_report
 
