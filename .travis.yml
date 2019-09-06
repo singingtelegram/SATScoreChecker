@@ -21,13 +21,9 @@ script:
 - dist/sat.exe -h
 - echo "Did something print?!?"
 deploy:
-  skip_cleanup: true
   provider: releases
   api_key:
-    secure: hCNJVGmrf/uZrB1EzZnvKwX+8c8al4MnFhe+Hgx5c8eoqopkIRq9ZwXK8x2dLuMxn3WhusZEaT8NGPynXyBgQ1preuQALPmjRpf5+kqbht2ZbJ3cyoNI+Ukuu/lJwvdAs8lfKkAJpMDlWTHTCM3wreii86aLRdp4awvOpRFR0ztnmSI85OfgJVxxNr4kEG1riteFP0ohkj29BR2veHOCV3k5ZCO4iZwN0qqhbfmXnQJiZgwz+BFD4/k0DozRrv3YPVpY/UR7neP34qL3ZgdYJ+2qb1MfGgXp+iCbevGmPkU4Th2RqtbZxVIPsKPy+1MEIDG5ICM3onDasu+iu9L4W9MQnZ5N1AUFnJM+IX3yMrX+eOuiMBWjPNdHbU6Ze2ka2DIG+2CHrQXKIH4Wat6PX3ZTIvCXmzImDBHqlZf18N3Zuflzvt27nGXl99uXQUvNJYMVX3cZxOZA1h5XuU4YFgvPmAqeYQJEm34gFi0MdC4tUU+kroDpauVH+qhzrHHu1UIxYQphHtqrqvTkFiQrxkgZMlpTDtkpcI5avN31fyb/IJobFGOHfvuP4yO0BQpzDerLU4spJ2hPpHp58LVisPya1APzwrI7bE6nft9dN4PQYLuJFU+LUGEChIUxVvNkBcEJirlDxObsmKhAFcu8O4ZUoNfDSh/HzedMhomSnoY=
+    secure: j7DBwJpBAFYAuq3Vwrwd7DVAKTKi6G8ly/xXgkVxRJC7AQbD2+wIWaTMYk4Cfd2tQs2WnD5QaAKuPElfLBWLMhRbjucZLjuoreZshkcedQzhT6DAPAck1y7Qgb8uF1xLaypyvwex/92LwVIDXOQdhwYozrDMPBKDzQ11NCh/NriW64gdFb6z0slA32Hx5Blc+j/BwPGX+/i+li5A4kN3PxKJ/FBJyRGwTdg8H2U0JF8zcLOHO+/SRWZNVt1BGcnbVxzf01P6vGmoPqz36GBd28YobmZ/0/YoSfvYWOqUYyjAADyjpIMwjTppfs9N1Yf3W9Acupz+1jQwcV/6v4HspgipJKKVluaOEO1qeL5iWea3eDBuX/zNfYLdzfrNt/wyKRZX6IShCKCu+81ATuVRxa4zRSbgknC6/k7BpGkiIQ8DxMeMMQ3WBmAYaFB+mBlB6iJjQ3AWxzf/qr+T0r6MIPnqxOqzrTF6cVh0dVSIHGAuueUP59M5TZyyQf0jPkOkhAXyhe/U7N+nKS7vciR8Qz92YLZseUTeh/xE9UVp6aqCRjwLGwdxxoy1irTiCpPLhZfH0kKSMehad+dYWyUzC5G+KgdW6h0AguKC2/4P4WYjy9kFhYfd78i+A2wbVdeUeF2Rn5D+o9oBdjzH8cpxXtTVEuIYmfZDx0qWH+SGkjA=
   file: dist/sat.exe
   on:
     repo: ru1jie/SATScoreChecker
-    branches:
-        only:
-           - master
