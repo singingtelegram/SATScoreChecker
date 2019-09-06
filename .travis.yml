@@ -1,32 +1,29 @@
-# https://blog.travis-ci.com/2018-10-11-windows-early-release
-# https://docs.travis-ci.com/user/reference/windows
-# https://chocolatey.org/packages/python
-# https://www.pyinstaller.org
-# https://travis-ci.community/t/pyinstaller-can-build-and-run-a-windows-exe-but-no-console-output-is-visible/2767
-os: windows      # Windows Server, version 1803
-language: shell  # 'language: python' is not yet supported on Windows
-
+os: windows
+language: shell
 env:
   global:
-    - PY37PATH=/c/Python37:/c/Python37/Scripts
-  
+  - PY37PATH=/c/Python37:/c/Python37/Scripts
 matrix:
   include:
-    - name: "Py3: Run tests"
-      env: PATH=$PY37PATH:$PATH
-      before_install:
-        - choco install python
-
+  - name: 'Py3: Run tests'
+    env: PATH=$PY37PATH:$PATH
+    before_install:
+    - choco install python
 install:
-  - python -m pip install --upgrade pip
-  #- pip install -r requirements.txt
-  - pip install pyinstaller
-  - pip install requests 
-  - pip install beautifulsoup4
-
+- python -m pip install --upgrade pip
+- pip install pyinstaller
+- pip install requests
+- pip install beautifulsoup4
 script:
-  - pyinstaller --onefile sat.py
-  - sleep 1  # Allow pyinstaller to finish writing to stdout
-  - ls -l dist
-  - dist/sat.exe -h
-  - echo "Did something print?!?"
+- pyinstaller --onefile sat.py
+- sleep 1
+- ls -l dist
+- dist/sat.exe -h
+- echo "Did something print?!?"
+deploy:
+  provider: releases
+  api_key:
+    secure: hCNJVGmrf/uZrB1EzZnvKwX+8c8al4MnFhe+Hgx5c8eoqopkIRq9ZwXK8x2dLuMxn3WhusZEaT8NGPynXyBgQ1preuQALPmjRpf5+kqbht2ZbJ3cyoNI+Ukuu/lJwvdAs8lfKkAJpMDlWTHTCM3wreii86aLRdp4awvOpRFR0ztnmSI85OfgJVxxNr4kEG1riteFP0ohkj29BR2veHOCV3k5ZCO4iZwN0qqhbfmXnQJiZgwz+BFD4/k0DozRrv3YPVpY/UR7neP34qL3ZgdYJ+2qb1MfGgXp+iCbevGmPkU4Th2RqtbZxVIPsKPy+1MEIDG5ICM3onDasu+iu9L4W9MQnZ5N1AUFnJM+IX3yMrX+eOuiMBWjPNdHbU6Ze2ka2DIG+2CHrQXKIH4Wat6PX3ZTIvCXmzImDBHqlZf18N3Zuflzvt27nGXl99uXQUvNJYMVX3cZxOZA1h5XuU4YFgvPmAqeYQJEm34gFi0MdC4tUU+kroDpauVH+qhzrHHu1UIxYQphHtqrqvTkFiQrxkgZMlpTDtkpcI5avN31fyb/IJobFGOHfvuP4yO0BQpzDerLU4spJ2hPpHp58LVisPya1APzwrI7bE6nft9dN4PQYLuJFU+LUGEChIUxVvNkBcEJirlDxObsmKhAFcu8O4ZUoNfDSh/HzedMhomSnoY=
+  file: dist/sat.exe
+  on:
+    repo: ru1jie/SATScoreChecker
