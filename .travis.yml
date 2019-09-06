@@ -28,3 +28,6 @@ deploy:
   file: dist/sat.exe
   on:
     repo: ru1jie/SATScoreChecker
+    branches:
+        only:
+           - master
